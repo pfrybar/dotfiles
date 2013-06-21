@@ -12,6 +12,10 @@
 (autoload 'js2-mode "js2-mode" nil t)
 (add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
 
+(custom-set-variables
+ '(js2-basic-offset 2)
+)
+
 ;; cperl mode
 (require 'cperl-mode)
 (defun cperl-backward-to-start-of-continued-exp (lim)

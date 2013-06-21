@@ -42,12 +42,12 @@ if [ -x /usr/bin/dircolors ]; then
     alias egrep='egrep --color=auto'
 fi
 
-# source custom alias definitions (in .bash_aliases)
-if [ -f ~/.bash_aliases ]; then
-    . ~/.bash_aliases
+# source local bashrc if it exists
+if [ -f "$HOME/.bashrc.local" ]; then
+    source "$HOME/.bashrc.local"
 fi
 
-# source custom bashrc for each machine
-if [ -f ~/.bashrc.local ]; then
-    . ~/.bashrc.local
+# source bash_aliases if it exists
+if [ -f "$HOME/.bash_aliases" ]; then
+    source "$HOME/.bash_aliases"
 fi
