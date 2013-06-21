@@ -1,3 +1,5 @@
 [user]
 	name = Paul Frybarger
 	email = pfrybarger@gmail.com
+[core]
+	editor = emacs
