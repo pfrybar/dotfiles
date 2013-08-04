@@ -1,12 +1,21 @@
 ;; my programming modes directory
 (setq load-path (append load-path (list "~/.emacs_pkgs/")))
 
-;; turn on clock in status bar
+;; turn on clock in status bar (helps server timeouts)
 (setq display-time-day-and-date t)
 (display-time)
 
 ;; turn off tabs, use spaces instead
 (setq-default indent-tabs-mode nil)
+
+;; move backups (*~) to a separate directory, and store multiple versions
+(setq backup-directory-alist '(("." . "~/.emacs.d/backup"))
+  backup-by-copying t    ; Don't delink hardlinks
+  version-control t      ; Use version numbers on backups
+  delete-old-versions t  ; Automatically delete excess backups
+  kept-new-versions 20   ; how many of the newest versions to keep
+  kept-old-versions 5    ; and how many of the old
+  )
 
 ;; javascript mode (js2-mode)
 (autoload 'js2-mode "js2-mode" nil t)
@@ -15,6 +24,22 @@
 (custom-set-variables
  '(js2-basic-offset 2)
 )
+
+;; groovy mode
+
+;;; turn on syntax highlighting
+(global-font-lock-mode 1)
+
+;;; use groovy-mode when file ends in .groovy or has #!/bin/groovy at start
+(autoload 'groovy-mode "groovy-mode" "Major mode for editing Groovy code." t)
+(add-to-list 'auto-mode-alist '("\.groovy$" . groovy-mode))
+(add-to-list 'interpreter-mode-alist '("groovy" . groovy-mode))
+
+;;; make Groovy mode electric by default.
+(add-hook 'groovy-mode-hook
+          '(lambda ()
+             (require 'groovy-electric)
+             (groovy-electric-mode)))
 
 ;; cperl mode
 (require 'cperl-mode)
