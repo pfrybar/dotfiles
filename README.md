@@ -7,20 +7,15 @@ system files
   /etc/bash.bash_logout
 
 # version controlled files
-  ~/.bash_profile - put environment variables here (including PATH)
+  ~/.bash_profile - not used (does not get sourced by login manager)
   ~/.bash_login - not used
-  ~/.profile - not used
+  ~/.profile - put environment variables here (including PATH)
 
   ~/.bashrc - do not put environment variables here, put bash specific customizations here
-  ~/.bash_aliases - custom spot for aliases, sourced by ~/.bashrc
-
-  ~/.bash_logout
 
 # machine specific files
-  ~/.bash_profile.local
+  ~/.profile.local
   ~/.bashrc.local
-  ~/.bash_aliases.local
-  ~/.bash_logout.local
 
 These are the files sourced for interactive, login bash shells:
   /etc/profile -> /etc/profile.d/* -> [ ~/.bash_profile || ~/.bash_login || ~/.profile ]
