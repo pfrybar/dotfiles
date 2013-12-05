@@ -3,5 +3,5 @@
 	email = pfrybarger@gmail.com
 [core]
 	editor = emacs
-[push]
-	default = simple
+#[push]
+#	default = simple
