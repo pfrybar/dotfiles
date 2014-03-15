@@ -7,6 +7,7 @@
 
 ;; turn off tabs, use spaces instead
 (setq-default indent-tabs-mode nil)
+(setq-default tab-width 4)
 
 ;; move backups (*~) to a separate directory, and store multiple versions
 (setq backup-directory-alist '(("." . "~/.emacs.d/backup"))
