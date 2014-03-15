@@ -1,7 +1,7 @@
 [user]
-	name = Paul Frybarger
-	email = pfrybarger@gmail.com
+    name = Paul Frybarger
+    email = pfrybarger@gmail.com
 [core]
-	editor = emacs
-#[push]
-#	default = simple
+    editor = emacs
+[push]
+    default = simple
