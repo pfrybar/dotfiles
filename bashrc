@@ -44,10 +44,10 @@ if [ -x /usr/bin/dircolors ]; then
     alias egrep='egrep --color=auto'
 fi
 
-# other custom aliases
-alias la='ls -alhF'
-
 # source local bashrc if it exists
 if [ -f "$HOME/.bashrc.local" ]; then
     . "$HOME/.bashrc.local"
 fi
+
+# custom aliases
+alias la='ls -alhF'
