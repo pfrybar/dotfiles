@@ -35,14 +35,24 @@ xterm*|rxvt*)
 esac
 
 # enable color support of ls and also add handy aliases
-if [ -x /usr/bin/dircolors ]; then
-    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
-    alias ls='ls --color=auto'
+case $(uname -s) in
+    Darwin|FreeBSD)
+        alias ls="ls -G"
+    ;;
+    Linux)
+        if [ -x /usr/bin/dircolors ]; then
+            test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+            alias ls='ls --color=auto'
 
-    alias grep='grep --color=auto'
-    alias fgrep='fgrep --color=auto'
-    alias egrep='egrep --color=auto'
-fi
+            alias grep='grep --color=auto'
+            alias fgrep='fgrep --color=auto'
+            alias egrep='egrep --color=auto'
+        fi
+    ;;
+    NetBSD|OpenBSD)
+        alias ls="ls -hF"
+    ;;
+esac
 
 # source local bashrc if it exists
 if [ -f "$HOME/.bashrc.local" ]; then
@@ -50,4 +60,4 @@ if [ -f "$HOME/.bashrc.local" ]; then
 fi
 
 # custom aliases
-alias la='ls -alhF'
+alias la='ls -alh'
