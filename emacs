@@ -67,3 +67,6 @@
  '(cperl-array-face ((((class color) (background light)) (:foreground "Blue"))))
  '(cperl-hash-face ((((class color) (background light)) (:foreground "Purple"))))
  '(js2-external-variable ((t (:foreground "orange" :weight bold)))))
+
+;; stop weird paste indentation issue (http://stackoverflow.com/questions/27736107/emacs-started-adding-extra-tabs-in-when-i-paste-into-it-on-os-x)
+(electric-indent-mode 0)

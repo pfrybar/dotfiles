@@ -1,7 +1,7 @@
 #!/bin/bash
 for f in *; do
-    # skip scripts, README.md, and any emacs autosave files
-    [[ $f == *.sh ]] || [[ $f == *~ ]] || [[ $f == "README.md" ]] && continue
+    # skip create/remove scripts, README.md, and any emacs autosave files
+    [[ $f == "create-links.sh" ]] || [[ $f == "remove-links.sh" ]] || [[ $f == *~ ]] || [[ $f == "README.md" ]] && continue
 
     # append a . to the file
     df=".$f"
