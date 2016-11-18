@@ -70,3 +70,7 @@
 
 ;; stop weird paste indentation issue (http://stackoverflow.com/questions/27736107/emacs-started-adding-extra-tabs-in-when-i-paste-into-it-on-os-x)
 (electric-indent-mode 0)
+
+;; yaml-mode
+(require 'yaml-mode)
+    (add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode))
