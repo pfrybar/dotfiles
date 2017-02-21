@@ -1,6 +1,9 @@
 ;; my programming modes directory
 (setq load-path (append load-path (list "~/.emacs_pkgs/")))
 
+;; byte-compile changed files
+(byte-recompile-directory (expand-file-name "~/.emacs_pkgs/") 0)
+
 ;; turn on clock in status bar (helps server timeouts)
 (setq display-time-day-and-date t)
 (display-time)
@@ -80,7 +83,18 @@
 (add-to-list 'auto-mode-alist '("\\.rs\\'" . rust-mode))
 ;; end rust mode
 
-;; yaml-mode
+;; markdown mode
+(autoload 'markdown-mode "markdown-mode"
+   "Major mode for editing Markdown files" t)
+(add-to-list 'auto-mode-alist '("\\.markdown\\'" . markdown-mode))
+(add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
+
+(autoload 'gfm-mode "markdown-mode"
+   "Major mode for editing GitHub Flavored Markdown files" t)
+(add-to-list 'auto-mode-alist '("README\\.md\\'" . gfm-mode))
+;; end markdown mode
+
+;; yaml mode
 (require 'yaml-mode)
     (add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode))
 
