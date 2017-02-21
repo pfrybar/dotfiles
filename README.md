@@ -2,7 +2,7 @@ Repository for syncing dotfile (e.g. .profile, .bashrc).
 
 # usage
 
-Use the provided 'create-links.sh' and 'remove-links.sh' scripts to "install" the dotfiles. This will move any existing .dotfile to .dotfile.old, and create a symlink for .dotfile into the .dotfiles directory.
+Use the provided `create-links.sh` and `remove-links.sh` scripts to "install" the dotfiles. This will move any existing .dotfile to .dotfile.old, and create a symlink for .dotfile into the .dotfiles directory.
 
 ## install dotfiles
   * clone repo or download zip/tarball
@@ -40,23 +40,19 @@ Use the provided 'create-links.sh' and 'remove-links.sh' scripts to "install" th
 
 However, /etc/profile calls /etc/bashrc, and it's good practice to have your ~/.bash_profile, ~/.bash_login, or ~/.profile source ~/.bashrc
 
-# non-related notes
+# other notes
 When setting up a new Mac machine, in order to get brew and paths setup correctly, do the following:
 
-install homebrew
-
-/etc/paths should look like:
-
+* install homebrew
+* `/etc/paths` should look like:
+```
     /usr/bin
     /bin
     /usr/sbin
     /sbin
     /usr/local/bin
-
-install newer bash (brew install bash)
-
-add to .profile.local: PATH=/usr/local/bin:${PATH/:\/usr\/local\/bin/}
-
-add /usr/local/bin/bash to /etc/shells
-
-change to use new bash shell: chsh -s /usr/local/bin/bash
+```
+* install newer bash (brew install bash)
+* add to .profile.local: PATH=/usr/local/bin:${PATH/:\/usr\/local\/bin/}
+* add /usr/local/bin/bash to /etc/shells
+* change to use new bash shell: chsh -s /usr/local/bin/bash
