@@ -50,6 +50,35 @@ case $(uname -s) in
     ;;
 esac
 
+# enable bash auto completion
+if ! shopt -oq posix; then
+    if [ -f /usr/share/bash-completion/bash_completion ]; then
+        . /usr/share/bash-completion/bash_completion
+    elif [ -f /etc/bash_completion ]; then
+        . /etc/bash_completion
+    elif [ -f /usr/local/etc/bash_completion ]; then
+        . /usr/local/etc/bash_completion
+    fi
+fi
+
+# enable bash git prompt, and use custom theme in ~/.git-prompt-colors.sh
+#     https://github.com/magicmonty/bash-git-prompt
+if [ -f "$HOME/.bash-git-prompt/gitprompt.sh" ]; then
+    GIT_PROMPT_THEME=Custom
+    . "$HOME/.bash-git-prompt/gitprompt.sh"
+elif [ -f /usr/local/share/gitprompt.sh ]; then
+    GIT_PROMPT_THEME=Custom
+    . /usr/local/share/gitprompt.sh
+fi
+
+# enable jenv to manage java versions, with edited export plugin that exports
+# $JAVA_VERSION for use in .git-prompt-colors.sh: export JAVA_VERSION=$(jenv version | head -c3)
+#     https://github.com/gcuisinier/jenv
+if [ -d "$HOME/.jenv/jenv/bin" ]; then
+    PATH="$HOME/.jenv/jenv/bin:$PATH"
+    eval "$(jenv init -)"
+fi
+
 # source local bashrc if it exists
 if [ -f "$HOME/.bashrc.local" ]; then
     . "$HOME/.bashrc.local"
