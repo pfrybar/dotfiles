@@ -21,44 +21,16 @@ shopt -s checkwinsize
 # make less more friendly for non-text input files, see lesspipe(1)
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
-PS1='\n\[\e[32m\]\u@\h \[\e[33m\]\w\[\e[0m\]\n\$ '
-
-# If this is an xterm set the title to user@host:dir
-case "$TERM" in
-xterm*|rxvt*)
-    PS1='\[\033]0;\u@\h:\w\007\]\n\[\e[32m\]\u@\h \[\e[33m\]\w\[\e[0m\]\n\$ '
-    ;;
-esac
+PS1='\n\[\e[32m\]\u@\h \[\e[33m\]\w\[\e[0m\]\n\[\033[1;34m\]$(date +%H:%M)\[\033[0;0m\] $ '
 
 # enable color support of ls and also add handy aliases
-case $(uname -s) in
-    Darwin|FreeBSD)
-        alias ls="ls -G"
-    ;;
-    Linux)
-        if [ -x /usr/bin/dircolors ]; then
-            test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
-            alias ls='ls --color=auto'
+if [ -x /usr/bin/dircolors ]; then
+    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+    alias ls='ls --color=auto'
 
-            alias grep='grep --color=auto'
-            alias fgrep='fgrep --color=auto'
-            alias egrep='egrep --color=auto'
-        fi
-    ;;
-    NetBSD|OpenBSD)
-        alias ls="ls -hF"
-    ;;
-esac
-
-# enable bash auto completion
-if ! shopt -oq posix; then
-    if [ -f /usr/share/bash-completion/bash_completion ]; then
-        . /usr/share/bash-completion/bash_completion
-    elif [ -f /etc/bash_completion ]; then
-        . /etc/bash_completion
-    elif [ -f /usr/local/etc/bash_completion ]; then
-        . /usr/local/etc/bash_completion
-    fi
+    alias grep='grep --color=auto'
+    alias fgrep='fgrep --color=auto'
+    alias egrep='egrep --color=auto'
 fi
 
 # enable bash git prompt, and use custom theme in ~/.git-prompt-colors.sh
