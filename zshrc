@@ -90,3 +90,5 @@ source $ZSH/oh-my-zsh.sh
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
 [ -f "$HOME/.zshrc.local" ] && . "$HOME/.zshrc.local"
+
+# also install zsh-completions and zsh-syntax-highlighting (arch packages)
