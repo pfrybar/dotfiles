@@ -16,12 +16,21 @@ if [[ -v TILIX_ID ]] || [[ -v VTE_VERSION ]]; then
         source /etc/profile.d/vte.sh
 fi
 
+# load common virtualenv
+if [[ -s $HOME/.pyenv/bin/activate ]]; then
+    VIRTUAL_ENV_DISABLE_PROMPT=1
+    emulate sh -c 'source ~/.pyenv/bin/activate'
+fi
+
+# dynamically load nvm/node (too slow)
 NVM_DIR="$HOME/.nvm"
 if [[ -s $NVM_DIR/nvm.sh ]]; then
-    # load nvm as needed (too slow)
-    alias node="echo 'nvm not initialized (run load_nvm)'"
-    alias npm="echo 'nvm not initialized (run load_nvm)'"
+    NO_INIT="echo 'nvm not initialized (run load_nvm)'"
+    alias nvm=$NO_INIT
+    alias node=$NO_INIT
+    alias npm=$NO_INIT
     function load_nvm() {
+        unalias nvm
         unalias node
         unalias npm
         export NVM_DIR=$NVM_DIR
