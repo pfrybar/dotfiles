@@ -16,6 +16,9 @@ for .dotfile into the .dotfiles directory.
   * cd into ~/.dotfiles
   * run ./remove-links.sh
 
+## global gitignore
+Run `git config --global core.excludesfile ~/.gitignore_global` to setup global .gitignore.
+
 # notes
 
 ## zsh
