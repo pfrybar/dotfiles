@@ -16,6 +16,18 @@ if [[ -v TILIX_ID ]] || [[ -v VTE_VERSION ]]; then
         source /etc/profile.d/vte.sh
 fi
 
+# jump alias to develop
+alias j-develop="cd ~/Documents/develop"
+
+# jump alias to repos inside develop with structure '/<server>/<repo>'
+for d in ~/Documents/develop/*; do
+    for dd in $d/*; do
+        for ddd in $dd/*; do
+            alias j-$(basename $ddd)="cd $ddd"
+        done
+    done
+done
+
 # load common virtualenv
 if [[ -s $HOME/.pyenv/bin/activate ]]; then
     VIRTUAL_ENV_DISABLE_PROMPT=1
@@ -37,3 +49,7 @@ if [[ -s $NVM_DIR/nvm.sh ]]; then
         source "$NVM_DIR/nvm.sh"
     }
 fi
+
+# turn off options
+unsetopt CORRECT_ALL
+unsetopt CORRECT

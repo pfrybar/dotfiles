@@ -3,6 +3,13 @@
 #
 
 #
+# Prompt Options
+#
+
+PURE_CMD_MAX_EXEC_TIME=3
+PURE_GIT_UNTRACKED_DIRTY=0
+
+#
 # General
 #
 
@@ -28,9 +35,9 @@ zstyle ':prezto:load' pmodule \
   'spectrum' \
   'utility' \
   'completion' \
+  'prompt' \
   'syntax-highlighting' \
   'history-substring-search' \
-  'prompt'
 
 #
 # Editor
@@ -64,11 +71,6 @@ zstyle ':prezto:module:history-substring-search:color' not-found 'standout'
 # Setting it to 'random' loads a random theme.
 # Auto set to 'off' on dumb terminals.
 zstyle ':prezto:module:prompt' theme 'pure'
-
-# Set the working directory prompt display length.
-# By default, it is set to 'short'. Set it to 'long' (without '~' expansion)
-# for longer or 'full' (with '~' expansion) for even longer prompt display.
-# zstyle ':prezto:module:prompt' pwd-length 'short'
 
 #
 # Python
