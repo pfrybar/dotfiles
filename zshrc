@@ -16,22 +16,22 @@ if [[ -v TILIX_ID ]] || [[ -v VTE_VERSION ]]; then
         source /etc/profile.d/vte.sh
 fi
 
-# jump alias to develop
-alias j-develop="cd ~/Documents/develop"
+if [[ -d $HOME/Documents/develop ]]; then
+    # jump alias to develop
+    alias j-develop="cd $HOME/Documents/develop"
 
-# jump alias to repos inside develop with structure '/<server>/<repo>'
-for d in ~/Documents/develop/*; do
-    for dd in $d/*; do
-        for ddd in $dd/*; do
-            alias j-$(basename $ddd)="cd $ddd"
-        done
+    # jump alias to repos inside develop with structure '/<server>/<repo>/'
+    for proj in $HOME/Documents/develop/*/*/*/; do
+        if [[ -d ${proj}.git ]]; then
+            alias j-$(basename $proj)="cd $proj"
+        fi
     done
-done
+fi
 
 # load common virtualenv
 if [[ -s $HOME/.pyenv/bin/activate ]]; then
     VIRTUAL_ENV_DISABLE_PROMPT=1
-    emulate sh -c 'source ~/.pyenv/bin/activate'
+    emulate sh -c 'source $HOME/.pyenv/bin/activate'
 fi
 
 # dynamically load nvm/node (too slow)
