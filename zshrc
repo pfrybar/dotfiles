@@ -53,3 +53,5 @@ fi
 # turn off options
 unsetopt CORRECT_ALL
 unsetopt CORRECT
+
+zstyle ':completion:*' completer _complete _match
