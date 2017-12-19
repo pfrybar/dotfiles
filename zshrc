@@ -2,22 +2,17 @@
 # Executes commands at the start of an interactive session.
 #
 
-# source prezto
-if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
-  source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
-fi
-
-# setup base16-shell for theme compatibility
-[[ -n "$PS1" ]] && [[ -s $HOME/.base16-shell/profile_helper.sh ]] && eval "$($HOME/.base16-shell/profile_helper.sh)"
-
 # enable badges/triggers for tilix
 if [[ -v TILIX_ID ]] || [[ -v VTE_VERSION ]]; then
     [[ -f /etc/profile.d/vte.sh ]] &&
         source /etc/profile.d/vte.sh
 fi
 
+# setup base16-shell for theme compatibility
+[[ -n "$PS1" ]] && [[ -s $HOME/.base16-shell/profile_helper.sh ]] && eval "$($HOME/.base16-shell/profile_helper.sh)"
+
+# setup jump aliases
 if [[ -d $HOME/Documents/develop ]]; then
-    # jump alias to develop
     alias j-develop="cd $HOME/Documents/develop"
 
     # jump alias to repos inside develop with structure '/<server>/<repo>/'
@@ -55,3 +50,8 @@ unsetopt CORRECT_ALL
 unsetopt CORRECT
 
 zstyle ':completion:*' completer _complete _match
+
+# source prezto
+if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
+  source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
+fi
