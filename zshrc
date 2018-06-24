@@ -2,12 +2,6 @@
 # Executes commands at the start of an interactive session.
 #
 
-# enable badges/triggers for tilix
-if [[ -v TILIX_ID ]] || [[ -v VTE_VERSION ]]; then
-    [[ -f /etc/profile.d/vte.sh ]] &&
-        source /etc/profile.d/vte.sh
-fi
-
 # setup base16-shell for theme compatibility
 [[ -n "$PS1" ]] && [[ -s $HOME/.base16-shell/profile_helper.sh ]] && eval "$($HOME/.base16-shell/profile_helper.sh)"
 
