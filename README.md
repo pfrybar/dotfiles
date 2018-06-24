@@ -16,17 +16,7 @@ for .dotfile into the .dotfiles directory.
   * cd into ~/.dotfiles
   * run ./remove-links.sh
 
-## global gitignore
-Run `git config --global core.excludesfile ~/.gitignore_global` to setup global .gitignore.
-
 # notes
 
 ## zsh
 Good explaination of zsh and source order here: https://wiki.archlinux.org/index.php/zsh.
-
-## extras
-`tomorrow-night.json` is a custom Tilix theme, copy to ~/.config/tilix/schemes.
-
-`tilix.dconf` is a dump of Tilix settings:
-  * save via `dconf dump /com/gexperts/Tilix/ > tilix.dconf`
-  * load via `dconf load /com/gexperts/Tilix/ < tilix.dconf`
