@@ -29,13 +29,9 @@ if [[ -s $HOME/.pyenv/bin/activate ]]; then
     emulate sh -c 'source $HOME/.pyenv/bin/activate'
 fi
 
-# dynamically load nvm/node (too slow)
+# dynamically load nvm when calling nvm/node/npm (too slow otherwise)
 NVM_DIR="$HOME/.nvm"
 if [[ -s $NVM_DIR/nvm.sh ]]; then
-    NO_INIT="echo 'nvm not initialized (run load_nvm)'"
-    alias nvm=$NO_INIT
-    alias node=$NO_INIT
-    alias npm=$NO_INIT
     function load_nvm() {
         unalias nvm
         unalias node
@@ -43,6 +39,9 @@ if [[ -s $NVM_DIR/nvm.sh ]]; then
         export NVM_DIR=$NVM_DIR
         source "$NVM_DIR/nvm.sh"
     }
+    alias nvm="load_nvm && nvm"
+    alias node="load_nvm && node"
+    alias npm="load_nvm && npm"
 fi
 
 # turn off options
@@ -55,3 +54,5 @@ zstyle ':completion:*' completer _complete _match
 if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
   source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
 fi
+
+alias ssh="ssh -A -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no"
