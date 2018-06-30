@@ -2,9 +2,6 @@
 # Executes commands at the start of an interactive session.
 #
 
-# setup base16-shell for theme compatibility
-[[ -n "$PS1" ]] && [[ -s $HOME/.base16-shell/profile_helper.sh ]] && eval "$($HOME/.base16-shell/profile_helper.sh)"
-
 # setup jump aliases
 if [[ -d $HOME/Documents/develop ]]; then
     alias j-develop="cd $HOME/Documents/develop"
