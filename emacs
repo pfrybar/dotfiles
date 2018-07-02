@@ -15,7 +15,8 @@
 (load custom-file :noerror)
 
 ;; set base16 theme (todo - only load if base16-theme package installed)
-(load-theme 'base16-tomorrow-night t)
+(setq base16-theme-256-color-source "base16-shell")
+(load-theme 'base16-default-dark t)
 
 ;; disable menu bar
 (menu-bar-mode -1)
