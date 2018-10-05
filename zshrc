@@ -51,4 +51,7 @@ if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
   source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
 fi
 
+# load fzf
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
 alias ssh="ssh -A -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no"
