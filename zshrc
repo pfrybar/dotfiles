@@ -19,6 +19,9 @@ if [[ -d $HOME/Documents/develop ]]; then
     done
 fi
 
+# setup jenv
+eval "$(jenv init -)"
+
 # load common virtualenv
 if [[ -s $HOME/.pyenv/bin/activate ]]; then
     VIRTUAL_ENV_DISABLE_PROMPT=1
