@@ -17,6 +17,10 @@ for .dotfile into the .dotfiles directory.
   * run ./remove-links.sh
 
 # notes
+To enable OpenSSH Agent protocol emulation, and make gpg-agent a drop-in replacement
+for ssh-agent, add the following line to ~/.gnupg/gpg-agent.conf:
+
+```enable-ssh-support```
 
 ## zsh
 Good explaination of zsh and source order here: https://wiki.archlinux.org/index.php/zsh.

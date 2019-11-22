@@ -28,5 +28,5 @@ export NVM_DIR="$HOME/.nvm"
 # fzf
 [ -s "$HOME/.fzf.zsh" ] && source "$HOME/.fzf.zsh"
 
-# autojump
-[ -f "/usr/local/etc/profile.d/autojump.sh" ] && source "/usr/local/etc/profile.d/autojump.sh"
+# local zshrc
+[ -s "$HOME/.zshrc.local" ] && source "$HOME/.zshrc.local"
