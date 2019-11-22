@@ -36,8 +36,12 @@ zstyle ':prezto:load' pmodule \
   'utility' \
   'completion' \
   'prompt' \
+  'fasd' \
+  'git' \
+  'gpg' \
   'syntax-highlighting' \
   'history-substring-search' \
+  'autosuggestions' \
 
 #
 # Editor
