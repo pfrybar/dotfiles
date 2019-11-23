@@ -41,7 +41,6 @@ zstyle ':prezto:load' pmodule \
   'gpg' \
   'syntax-highlighting' \
   'history-substring-search' \
-  'autosuggestions' \
 
 #
 # Editor
