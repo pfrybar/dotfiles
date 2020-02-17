@@ -7,3 +7,11 @@
 if [[ ( "$SHLVL" -eq 1 && ! -o LOGIN ) && -s "${ZDOTDIR:-$HOME}/.zprofile" ]]; then
   source "${ZDOTDIR:-$HOME}/.zprofile"
 fi
+
+# Define aliases
+alias gb='git branch'
+alias gc='git commit'
+alias gd='git diff'
+alias gdc='git diff --cached'
+alias gs='git status -s'
+alias gsu='git submodule update'
