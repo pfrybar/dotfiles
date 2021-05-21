@@ -10,8 +10,9 @@ fi
 
 # Define aliases
 alias gb='git branch'
+alias gco='git checkout'
 alias gc='git commit'
 alias gd='git diff'
 alias gdc='git diff --cached'
-alias gs='git status -s'
+alias gs='git status'
 alias gsu='git submodule update'
