@@ -32,14 +32,11 @@ zstyle ':prezto:load' pmodule \
   'environment' \
   'editor' \
   'history' \
-  'spectrum' \
   'utility' \
   'completion' \
-  'prompt' \
-  'fasd' \
-  'gpg' \
   'syntax-highlighting' \
-  'history-substring-search' \
+  'prompt' \
+  'gpg' \
 
 #
 # Editor
