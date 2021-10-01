@@ -14,7 +14,7 @@ unsetopt CORRECT
 zstyle ':completion:*' completer _complete _match
 
 # prezto
-[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ] && source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
+[ -s "${ZDOTDIR:-$HOME}/.prezto/init.zsh" ] && source "${ZDOTDIR:-$HOME}/.prezto/init.zsh"
 
 # sdkman
 export SDKMAN_DIR="$HOME/.sdkman"

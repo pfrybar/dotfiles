@@ -33,6 +33,7 @@ zstyle ':prezto:load' pmodule \
   'editor' \
   'history' \
   'utility' \
+  'python' \
   'completion' \
   'syntax-highlighting' \
   'prompt' \
@@ -94,3 +95,11 @@ zstyle ':prezto:module:syntax-highlighting' pattern \
 # before deleting or overwriting files. Set to 'no' to disable this safer
 # behavior.
 zstyle ':prezto:module:utility' safe-ops 'no'
+
+
+#
+# Python
+#
+
+# Automatically switch into a virtualenv if one is found in '.venv'
+zstyle ':prezto:module:python:virtualenv' auto-switch 'yes'
