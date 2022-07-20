@@ -13,17 +13,18 @@ unsetopt CORRECT
 
 zstyle ':completion:*' completer _complete _match
 
+# homebrew
+HOMEBREW="/opt/homebrew/bin/brew"
+[ -s "$HOMEBREW" ] && eval "$($HOMEBREW shellenv)"
+
 # prezto
-[ -s "${ZDOTDIR:-$HOME}/.prezto/init.zsh" ] && source "${ZDOTDIR:-$HOME}/.prezto/init.zsh"
+PREZTO_DIR="${ZDOTDIR:-$HOME}/.zprezto"
+[ -s "$PREZTO_DIR/init.zsh" ] && source "$PREZTO_DIR/init.zsh"
 
-# sdkman
-export SDKMAN_DIR="$HOME/.sdkman"
-[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ] && source "$HOME/.sdkman/bin/sdkman-init.sh"
-
-# node/nvm
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && source "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && source "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+# asdf
+ASDF_DIR="$HOME/.asdf"
+[ -s "$ASDF_DIR/asdf.sh" ] && source "$ASDF_DIR/asdf.sh" && fpath=(${ASDF_DIR}/completions $fpath) && autoload -Uz compinit && compinit
+[ -s "$ASDF_DIR/plugins/java/set-java-home.zsh" ] && source "$ASDF_DIR/plugins/java/set-java-home.zsh"
 
 # fzf
 [ -s "$HOME/.fzf.zsh" ] && source "$HOME/.fzf.zsh"

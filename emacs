@@ -1,15 +1,17 @@
 ;; MELPA
-;;   install packages: base16-theme, yaml-mode, markdown-mode, js2-mode
+;;   install packages: base16-theme, yaml-mode, markdown-mode
 (require 'package)
-(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
+(package-initialize)
+;; run 'package-refresh-contents' to fetch latest package list
 
 ;; move custom file to different location
 (setq custom-file "~/.emacs.d/custom.el")
 (load custom-file :noerror)
 
 ;; set base16 theme (todo - only load if base16-theme package installed)
-(setq base16-theme-256-color-source "base16-shell")
-(load-theme 'base16-default-dark t)
+(setq base16-theme-256-color-source "colors")
+(load-theme 'base16-tomorrow-night t)
 
 ;; disable menu bar
 (menu-bar-mode -1)
