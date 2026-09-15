@@ -20,6 +20,13 @@ if [[ -z "$LANG" ]]; then
 fi
 
 #
+# Homebrew
+#
+
+HOMEBREW="/opt/homebrew/bin/brew"
+[ -s "$HOMEBREW" ] && eval "$($HOMEBREW shellenv)"
+
+#
 # Paths
 #
 
@@ -29,6 +36,7 @@ typeset -gU cdpath fpath mailpath path
 # Set the list of directories that Zsh searches for programs.
 path=(
   $HOME/.local/{,s}bin(N)
+  "${ASDF_DATA_DIR:-$HOME/.asdf}/shims"
   $HOME/{,s}bin(N)
   /opt/homebrew/{,s}bin(N)
   /opt/local/{,s}bin(N)
