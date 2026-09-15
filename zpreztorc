@@ -36,8 +36,7 @@ zstyle ':prezto:load' pmodule \
   'python' \
   'completion' \
   'syntax-highlighting' \
-  'prompt' \
-  'gpg' \
+  'prompt'
 
 #
 # Editor
