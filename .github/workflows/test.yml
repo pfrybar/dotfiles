@@ -1,0 +1,37 @@
+name: Test
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  dotfiles:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Install Zsh
+        run: sudo apt-get update && sudo apt-get install --yes zsh
+
+      - name: Test installation and shell startup
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          bash -n install.sh
+          for file in zshenv zprofile zshrc zpreztorc zlogin zlogout; do
+            zsh -n "$file"
+          done
+
+          test_home="$(mktemp -d)"
+          trap 'rm -rf "$test_home"' EXIT
+
+          HOME="$test_home" ./install.sh
+          HOME="$test_home" ./install.sh
+
+          test -L "$test_home/.zshrc"
+          test -L "$test_home/.gitconfig"
+
+          HOME="$test_home" ZDOTDIR="$test_home" zsh -lic 'exit'
