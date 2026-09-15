@@ -6,7 +6,7 @@
 [core]
 	pager = diff-so-fancy | less --tabs=4 -R
 [color]
-	ui = true
+	ui = auto
 [color "diff-highlight"]
 	oldNormal = red bold
 	oldHighlight = red bold 52
@@ -21,5 +21,13 @@
 	whitespace = red reverse
 [diff-so-fancy]
 	markEmptyLines = false
+[init]
+	defaultBranch = main
+[fetch]
+	prune = true
+[merge]
+	conflictStyle = zdiff3
 [pull]
-	rebase = false
+	ff = only
+[push]
+	autoSetupRemote = true
