@@ -2,9 +2,9 @@ Repository for syncing dotfiles (e.g. .emacs, .zshrc).
 
 # usage
 
-Use the provided `install.sh` script to install the dotfiles. This will move any
-existing .dotfile to .dotfile.old, and create a symlink for .dotfile into the
-.dotfiles directory.
+`install.sh` creates symlinks in your home directory that point to files in this
+repository. For example, `~/.zshrc` points to `zshrc`. Before replacing an
+existing target, the script moves it to the same path with `.old` appended.
 
 ## install dotfiles
   * clone repo or download zip/tarball
