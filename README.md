@@ -11,3 +11,9 @@ existing .dotfile to .dotfile.old, and create a symlink for .dotfile into the
   * move to ~/.dotfiles
   * cd into ~/.dotfiles
   * run ./install.sh
+
+## shell theme
+
+The Tomorrow Night theme from [Tinted Shell](https://github.com/tinted-theming/tinted-shell)
+is vendored as `tinted-shell` and linked to `~/.tinted-shell`. Zsh sources it
+directly, so no theme manager or separate clone is required on macOS or Linux.

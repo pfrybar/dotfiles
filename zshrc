@@ -21,9 +21,8 @@ alias gsu='git submodule update'
 alias kc='kubectl'
 alias kx='kubectx'
 
-# base16-shell (don't forget to set active theme)
-BASE16_SHELL="$HOME/.base16-shell/"
-[ -n "$PS1" ] && [ -s "$BASE16_SHELL/profile_helper.sh" ] && eval "$("$BASE16_SHELL/profile_helper.sh")"
+# tinted-shell
+[ -s "$HOME/.tinted-shell" ] && source "$HOME/.tinted-shell"
 
 # asdf
 asdf_dir="${ASDF_DATA_DIR:-$HOME/.asdf}"

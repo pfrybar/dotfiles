@@ -21,6 +21,7 @@ jobs:
           set -euo pipefail
 
           bash -n install.sh
+          sh -n tinted-shell
           for file in zshenv zprofile zshrc zpreztorc zlogin zlogout; do
             zsh -n "$file"
           done
@@ -33,5 +34,6 @@ jobs:
 
           test -L "$test_home/.zshrc"
           test -L "$test_home/.gitconfig"
+          test -L "$test_home/.tinted-shell"
 
           HOME="$test_home" ZDOTDIR="$test_home" zsh -lic 'exit'
