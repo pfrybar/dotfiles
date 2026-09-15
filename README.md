@@ -11,8 +11,3 @@ existing .dotfile to .dotfile.old, and create a symlink for .dotfile into the
   * move to ~/.dotfiles
   * cd into ~/.dotfiles
   * run ./install.sh
-
-# notes
-
-## zsh
-Good explaination of zsh and source order here: https://wiki.archlinux.org/index.php/zsh.

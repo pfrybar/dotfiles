@@ -11,6 +11,15 @@ BASE16_SHELL="$HOME/.base16-shell/"
 unsetopt CORRECT_ALL
 unsetopt CORRECT
 
+# define aliases
+alias gb='git branch'
+alias gco='git checkout'
+alias gc='git commit'
+alias gd='git diff'
+alias gdc='git diff --cached'
+alias gs='git status'
+alias gsu='git submodule update'
+
 zstyle ':completion:*' completer _complete _match
 
 # homebrew
