@@ -23,8 +23,22 @@ fi
 # Homebrew
 #
 
-HOMEBREW="/opt/homebrew/bin/brew"
-[ -s "$HOMEBREW" ] && eval "$($HOMEBREW shellenv)"
+# Set Homebrew's environment without invoking brew during shell startup.
+if [[ -x /opt/homebrew/bin/brew ]]; then
+  export HOMEBREW_PREFIX='/opt/homebrew'
+  export HOMEBREW_CELLAR='/opt/homebrew/Cellar'
+  export HOMEBREW_REPOSITORY='/opt/homebrew'
+
+  fpath=("$HOMEBREW_PREFIX/share/zsh/site-functions" $fpath)
+  export FPATH
+
+  if [[ -n "${MANPATH-}" ]]; then
+    export MANPATH="${MANPATH%"${MANPATH##*[!:]}"}"
+    export MANPATH=":${MANPATH#"${MANPATH%%[!:]*}"}"
+  fi
+
+  export INFOPATH="$HOMEBREW_PREFIX/share/info:${INFOPATH:-}"
+fi
 
 #
 # Paths
