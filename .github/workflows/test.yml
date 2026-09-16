@@ -4,6 +4,9 @@ on:
   push:
   pull_request:
 
+permissions:
+  contents: read
+
 jobs:
   dotfiles:
     runs-on: ubuntu-24.04
@@ -18,7 +21,7 @@ jobs:
           sudo apt-get update
           sudo apt-get install --yes \
             bison build-essential curl emacs-nox git libevent-dev \
-            libncurses-dev pkg-config zsh
+            libncurses-dev pkg-config shellcheck zsh
 
       - name: Build the minimum supported tmux version
         env:
@@ -40,6 +43,7 @@ jobs:
           set -euo pipefail
 
           bash -n install.sh
+          shellcheck install.sh
           sh -n tinted-shell
           for file in zshenv zprofile zshrc zpreztorc zlogin zlogout; do
             zsh -n "$file"
@@ -129,6 +133,7 @@ jobs:
 
           test "$(tmux -L "$socket" show-options -gv prefix)" = C-Space
           test "$(tmux -L "$socket" show-options -gv history-limit)" = 100000
+          test "$(tmux -L "$socket" show-options -sv escape-time)" = 10
           test "$(tmux -L "$socket" show-options -gv mouse)" = on
           test "$(tmux -L "$socket" show-options -sv extended-keys)" = on
           test "$(tmux -L "$socket" show-options -sv extended-keys-format)" = csi-u
