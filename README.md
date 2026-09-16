@@ -34,6 +34,7 @@ This assumes Prezto, diff-so-fancy, and other tools are already installed.
 git clone https://github.com/pfrybar/dotfiles.git "$HOME/.dotfiles"
 cd "$HOME/.dotfiles"
 ./install.sh
+./post-install.sh
 ```
 
 ### Full macOS setup
@@ -63,8 +64,7 @@ git config --file "$HOME/.gitconfig.local" user.name "Your Name"
 git config --file "$HOME/.gitconfig.local" user.email "you@example.com"
 git config --file "$HOME/.gitconfig.local" user.signingKey "path_to_signing_key"
 
-emacs --batch --eval '(package-initialize)' --load "$HOME/.emacs" \
-  --eval '(package-refresh-contents)' --eval '(package-install-selected-packages t)'
+./post-install.sh
 
 ZSH_PATH="$(command -v zsh)"
 grep -qxF "$ZSH_PATH" /etc/shells || printf '%s\n' "$ZSH_PATH" | sudo tee -a /etc/shells
@@ -81,8 +81,8 @@ The installer is idempotent:
 - Correct symlinks are left unchanged.
 - Existing destinations are moved to `<name>.old`.
 - Installation stops if both a destination and its backup already exist.
-- `Brewfile`, `install.sh`, `README.md`, hidden entries, and files ending in `~`
-  are skipped.
+- `Brewfile`, `install.sh`, `post-install.sh`, `README.md`, hidden entries, and
+  files ending in `~` are skipped.
 
 The file discovery is intentionally dynamic. Do not leave unrelated files in
 the repository root, because they would become dotfile links.
@@ -138,6 +138,9 @@ The selected packages are `base16-theme`, `markdown-mode`, and `yaml-mode`.
 Tomorrow Night loads when its package is installed. Customize output lives in
 `~/.emacs.d/custom.el`, and backups live under `~/.emacs.d/backups`.
 
+`post-install.sh` installs any selected packages that are missing. Once all of
+them are installed, it does nothing and does not contact the package archives.
+
 ### tmux
 
 The prefix is `Ctrl-Space`; pressing it twice sends `Ctrl-Space` to the pane.
@@ -168,7 +171,8 @@ git -C "$HOME/.zprezto" submodule sync --recursive
 git -C "$HOME/.zprezto" submodule update --init --recursive
 ```
 
-Rerun `install.sh` only when a new top-level dotfile is added. Updates are never
+Rerun `install.sh` only when a new top-level dotfile is added, and
+`post-install.sh` when the selected Emacs packages change. Updates are never
 pulled automatically; Pure's background fetches do not modify working trees.
 
 ## Restoring a backup
@@ -185,4 +189,5 @@ mv "$HOME/.zshrc.old" "$HOME/.zshrc"
 
 GitHub Actions checks the installer on Linux and macOS, including the Apple
 Silicon Homebrew environment. It also tests configuration syntax, Git, Emacs,
-tmux, Prezto startup, and Atuin initialization. See the workflow for details.
+Emacs package installation, tmux, Prezto startup, and Atuin initialization.
+See the workflow for details.
