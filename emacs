@@ -8,8 +8,8 @@
 (setq custom-file (locate-user-emacs-file "custom.el"))
 (load custom-file :noerror)
 
-;; set base16 theme when it is installed
-(when (package-installed-p 'base16-theme)
+;; set base16 theme when it is available
+(when (memq 'base16-tomorrow-night (custom-available-themes))
   (setq base16-theme-256-color-source 'colors)
   (load-theme 'base16-tomorrow-night t))
 

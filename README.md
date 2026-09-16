@@ -63,7 +63,8 @@ git config --file "$HOME/.gitconfig.local" user.name "Your Name"
 git config --file "$HOME/.gitconfig.local" user.email "you@example.com"
 git config --file "$HOME/.gitconfig.local" user.signingKey "path_to_signing_key"
 
-emacs --batch --load "$HOME/.emacs" --eval '(package-refresh-contents)' --eval '(package-install-selected-packages t)'
+emacs --batch --eval '(package-initialize)' --load "$HOME/.emacs" \
+  --eval '(package-refresh-contents)' --eval '(package-install-selected-packages t)'
 
 ZSH_PATH="$(command -v zsh)"
 grep -qxF "$ZSH_PATH" /etc/shells || printf '%s\n' "$ZSH_PATH" | sudo tee -a /etc/shells

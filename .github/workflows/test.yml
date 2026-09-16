@@ -52,7 +52,8 @@ jobs:
 
           emacs_home="$(mktemp -d)"
           trap 'rm -rf "$emacs_home"' EXIT
-          HOME="$emacs_home" emacs --batch --quick --load "$PWD/emacs"
+          HOME="$emacs_home" emacs --batch --quick \
+            --eval '(package-initialize)' --load "$PWD/emacs"
 
       - name: Test installer
         shell: bash
@@ -120,7 +121,8 @@ jobs:
           test "$(git_config push.autoSetupRemote)" = true
           test "$(git_config core.pager)" = 'diff-so-fancy | less --tabs=4 -R'
 
-          HOME="$test_home" emacs --batch --quick --load "$PWD/emacs" \
+          HOME="$test_home" emacs --batch --quick \
+            --eval '(package-initialize)' --load "$PWD/emacs" \
             --eval "(unless (equal package-selected-packages '(base16-theme markdown-mode yaml-mode)) (kill-emacs 1))" \
             --eval "(unless (equal custom-file (locate-user-emacs-file \"custom.el\")) (kill-emacs 1))" \
             --eval "(unless (equal (cdr (assoc \".\" backup-directory-alist)) (locate-user-emacs-file \"backups\")) (kill-emacs 1))"
