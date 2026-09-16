@@ -177,5 +177,6 @@ mv "$HOME/.zshrc.old" "$HOME/.zshrc"
 
 ## Tests
 
-GitHub Actions checks shell syntax, installer idempotency, symlinks, and Zsh
-startup. See the workflow for exact test details.
+GitHub Actions checks configuration syntax, installer backups and idempotency,
+all symlinks, Git, Emacs, tmux, Prezto startup, and Atuin initialization. See
+the workflow for exact test details.

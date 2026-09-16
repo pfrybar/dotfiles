@@ -6,16 +6,35 @@ on:
 
 jobs:
   dotfiles:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
 
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
 
-      - name: Install Zsh
-        run: sudo apt-get update && sudo apt-get install --yes zsh
+      - name: Install test dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes \
+            bison build-essential curl emacs-nox git libevent-dev \
+            libncurses-dev pkg-config zsh
 
-      - name: Test installation and shell startup
+      - name: Build the minimum supported tmux version
+        env:
+          TMUX_VERSION: "3.5"
+        run: |
+          curl --fail --location --silent --show-error \
+            "https://github.com/tmux/tmux/releases/download/${TMUX_VERSION}/tmux-${TMUX_VERSION}.tar.gz" \
+            | tar -xz -C "$RUNNER_TEMP"
+          cd "$RUNNER_TEMP/tmux-${TMUX_VERSION}"
+          ./configure --prefix="$HOME/.local"
+          make --jobs="$(nproc)"
+          make install
+          "$HOME/.local/bin/tmux" -V
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+
+      - name: Check configuration syntax
         shell: bash
         run: |
           set -euo pipefail
@@ -25,15 +44,135 @@ jobs:
           for file in zshenv zprofile zshrc zpreztorc zlogin zlogout; do
             zsh -n "$file"
           done
+          git config --file gitconfig --list >/dev/null
+
+          emacs_home="$(mktemp -d)"
+          trap 'rm -rf "$emacs_home"' EXIT
+          HOME="$emacs_home" emacs --batch --quick --load "$PWD/emacs"
+
+      - name: Test installer
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          test_home="$(mktemp -d)"
+          conflict_home="$(mktemp -d)"
+          trap 'rm -rf "$test_home" "$conflict_home"' EXIT
+
+          # Exercise backup creation as well as ordinary link creation.
+          printf 'original zshrc\n' > "$test_home/.zshrc"
+          HOME="$test_home" ./install.sh
+          test "$(<"$test_home/.zshrc.old")" = 'original zshrc'
+
+          expected=(
+            emacs gitconfig tinted-shell tmux.conf zlogin zlogout
+            zpreztorc zprofile zshenv zshrc
+          )
+          for file in "${expected[@]}"; do
+            target="$test_home/.$file"
+            test -L "$target"
+            test "$(readlink -f "$target")" = "$PWD/$file"
+          done
+          test "$(find "$test_home" -maxdepth 1 -type l | wc -l)" -eq "${#expected[@]}"
+
+          # A second run must leave every correct link unchanged.
+          HOME="$test_home" ./install.sh
+          for file in "${expected[@]}"; do
+            test "$(readlink -f "$test_home/.$file")" = "$PWD/$file"
+          done
+
+          # Never overwrite an existing backup.
+          printf 'current\n' > "$conflict_home/.zshrc"
+          printf 'backup\n' > "$conflict_home/.zshrc.old"
+          error_log="$conflict_home/install-error.log"
+          if HOME="$conflict_home" ./install.sh >"$error_log" 2>&1; then
+            echo 'installer unexpectedly overwrote an existing backup' >&2
+            exit 1
+          fi
+          grep -q 'refusing to overwrite backup' "$error_log"
+          test "$(<"$conflict_home/.zshrc")" = 'current'
+          test "$(<"$conflict_home/.zshrc.old")" = 'backup'
+
+      - name: Test Git and Emacs configuration
+        shell: bash
+        run: |
+          set -euo pipefail
 
           test_home="$(mktemp -d)"
           trap 'rm -rf "$test_home"' EXIT
+          HOME="$test_home" ./install.sh >/dev/null
 
-          HOME="$test_home" ./install.sh
-          HOME="$test_home" ./install.sh
+          git_config() {
+            HOME="$test_home" git config --global --includes --get "$1"
+          }
+          test "$(git_config color.ui)" = auto
+          test "$(git_config init.defaultBranch)" = main
+          test "$(git_config fetch.prune)" = true
+          test "$(git_config merge.conflictStyle)" = zdiff3
+          test "$(git_config pull.ff)" = only
+          test "$(git_config push.autoSetupRemote)" = true
+          test "$(git_config core.pager)" = 'diff-so-fancy | less --tabs=4 -R'
 
-          test -L "$test_home/.zshrc"
-          test -L "$test_home/.gitconfig"
-          test -L "$test_home/.tinted-shell"
+          HOME="$test_home" emacs --batch --quick --load "$PWD/emacs" \
+            --eval "(unless (equal package-selected-packages '(base16-theme markdown-mode yaml-mode)) (kill-emacs 1))" \
+            --eval "(unless (equal custom-file (locate-user-emacs-file \"custom.el\")) (kill-emacs 1))" \
+            --eval "(unless (equal (cdr (assoc \".\" backup-directory-alist)) (locate-user-emacs-file \"backups\")) (kill-emacs 1))"
 
-          HOME="$test_home" ZDOTDIR="$test_home" zsh -lic 'exit'
+      - name: Test tmux configuration
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          socket="dotfiles-test-$RANDOM"
+          trap 'tmux -L "$socket" kill-server 2>/dev/null || true' EXIT
+          tmux -L "$socket" -f "$PWD/tmux.conf" new-session -d
+
+          test "$(tmux -L "$socket" show-options -gv prefix)" = C-Space
+          test "$(tmux -L "$socket" show-options -gv history-limit)" = 100000
+          test "$(tmux -L "$socket" show-options -gv mouse)" = on
+          test "$(tmux -L "$socket" show-options -sv extended-keys)" = on
+          test "$(tmux -L "$socket" show-options -sv extended-keys-format)" = csi-u
+          test "$(tmux -L "$socket" show-options -sv focus-events)" = on
+          test "$(tmux -L "$socket" show-options -sv set-clipboard)" = on
+          test "$(tmux -L "$socket" show-options -gv allow-passthrough)" = on
+          test "$(tmux -L "$socket" show-options -gv renumber-windows)" = on
+          grep -Fxq 'xterm*:extkeys' <<< \
+            "$(tmux -L "$socket" show-options -sv terminal-features)"
+          grep -q 'send-prefix' <<< \
+            "$(tmux -L "$socket" list-keys -T prefix C-Space)"
+
+      - name: Test Prezto and Atuin initialization
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          test_home="$(mktemp -d)"
+          trap 'rm -rf "$test_home"' EXIT
+          HOME="$test_home" ./install.sh >/dev/null
+          git clone --depth 1 --recurse-submodules --shallow-submodules \
+            https://github.com/sorin-ionescu/prezto.git \
+            "$test_home/.zprezto"
+
+          HOME="$test_home" ZDOTDIR="$test_home" TERM=xterm-256color zsh -lic '
+            for module in environment editor history utility completion syntax-highlighting prompt; do
+              zstyle -t ":prezto:module:$module" loaded || exit 1
+            done
+            [[ $options[CORRECT] == off && $options[CORRECT_ALL] == off ]]
+            [[ $prompt_theme == pure ]]
+            [[ $PURE_GIT_UNTRACKED_DIRTY == 0 ]]
+            ! zstyle -t :prezto:module:python loaded
+          '
+
+          mkdir -p "$test_home/.local/bin"
+          cat > "$test_home/.local/bin/atuin" <<'EOF'
+          #!/bin/sh
+          if [ "$#" -eq 3 ] && [ "$1" = init ] && [ "$2" = zsh ] && [ "$3" = --disable-up-arrow ]; then
+            printf '%s\n' 'typeset -g ATUIN_TEST_INITIALIZED=yes'
+          else
+            exit 1
+          fi
+          EOF
+          chmod +x "$test_home/.local/bin/atuin"
+
+          HOME="$test_home" ZDOTDIR="$test_home" TERM=xterm-256color \
+            zsh -lic '[[ $ATUIN_TEST_INITIALIZED == yes ]]'
