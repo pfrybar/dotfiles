@@ -81,8 +81,8 @@ The installer is idempotent:
 - Correct symlinks are left unchanged.
 - Existing destinations are moved to `<name>.old`.
 - Installation stops if both a destination and its backup already exist.
-- `Brewfile`, `install.sh`, `post-install.sh`, `README.md`, hidden entries, and
-  files ending in `~` are skipped.
+- `AGENTS.md`, `Brewfile`, `CLAUDE.md`, `install.sh`, `post-install.sh`,
+  `README.md`, hidden entries, and files ending in `~` are skipped.
 
 The file discovery is intentionally dynamic. Do not leave unrelated files in
 the repository root, because they would become dotfile links.

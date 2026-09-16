@@ -71,6 +71,8 @@ jobs:
           test "$(<"$test_home/.zshrc.old")" = 'original zshrc'
           test ! -e "$test_home/.Brewfile"
           test ! -e "$test_home/.post-install.sh"
+          test ! -e "$test_home/.AGENTS.md"
+          test ! -e "$test_home/.CLAUDE.md"
 
           expected=(
             emacs gitconfig tinted-shell tmux.conf zlogin zlogout
@@ -229,6 +231,8 @@ jobs:
           HOME="$test_home" ./install.sh >/dev/null
           test ! -e "$test_home/.Brewfile"
           test ! -e "$test_home/.post-install.sh"
+          test ! -e "$test_home/.AGENTS.md"
+          test ! -e "$test_home/.CLAUDE.md"
 
           expected=(
             emacs gitconfig tinted-shell tmux.conf zlogin zlogout

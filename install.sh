@@ -4,7 +4,7 @@ set -euo pipefail
 for f in *; do
     # skip repository metadata and emacs autosave files
     case "$f" in
-        Brewfile|install.sh|post-install.sh|README.md|*~)
+        AGENTS.md|Brewfile|CLAUDE.md|install.sh|post-install.sh|README.md|*~)
             continue
             ;;
     esac
