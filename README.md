@@ -39,8 +39,8 @@ cd "$HOME/.dotfiles"
 
 ### Full macOS setup
 
-This sequence assumes a fresh machine. Make sure to replace name, email,
-and signing key path for git config in the instructions below before running.
+This sequence assumes a fresh machine, with the SSH signing key at
+`~/.ssh/git_signing_key`.
 
 ```sh
 xcode-select --install
@@ -59,11 +59,6 @@ brew bundle install --no-upgrade --file="$HOME/.dotfiles/Brewfile"
 git clone --recursive https://github.com/sorin-ionescu/prezto.git "$HOME/.zprezto"
 cd "$HOME/.dotfiles"
 ./install.sh
-
-git config --file "$HOME/.gitconfig.local" user.name "Your Name"
-git config --file "$HOME/.gitconfig.local" user.email "you@example.com"
-git config --file "$HOME/.gitconfig.local" user.signingKey "path_to_signing_key"
-
 ./post-install.sh
 
 ZSH_PATH="$(command -v zsh)"
@@ -125,8 +120,10 @@ optional and are not managed here.
 
 ### Git
 
-Personal identity and the SSH signing-key path stay in `~/.gitconfig.local`.
-Commits are signed automatically. The tracked configuration uses diff-so-fancy,
+The tracked configuration sets the default identity and the SSH signing-key
+path, `~/.ssh/git_signing_key`. `~/.gitconfig.local` is included last, so it
+overrides anything tracked, such as `user.email` on a work machine. Commits are
+signed automatically. The tracked configuration also uses diff-so-fancy,
 initializes repositories with `main`, prunes stale remote branches, uses
 `zdiff3` conflicts, establishes an upstream on first push, and allows only
 fast-forward pulls. A divergent pull must be resolved with an explicit merge or
@@ -157,8 +154,9 @@ The `tmux-256color` terminfo entry must exist locally and on remote hosts.
 ### Local overrides
 
 Machine-specific interactive configuration belongs in `~/.zshrc.local`, which
-loads after Prezto and Atuin. Keep identity, credentials, and secrets outside
-the repository.
+loads after Prezto and Atuin. Machine-specific Git settings, such as a work
+email address, belong in `~/.gitconfig.local`. Keep credentials and secrets
+outside the repository.
 
 ## Updating
 

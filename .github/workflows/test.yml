@@ -124,6 +124,13 @@ jobs:
           test "$(git_config pull.ff)" = only
           test "$(git_config push.autoSetupRemote)" = true
           test "$(git_config core.pager)" = 'diff-so-fancy | less --tabs=4 -R'
+          test "$(git_config user.name)" = 'Paul Frybarger'
+          test "$(git_config user.email)" = pfrybar@frymail.net
+          test "$(git_config user.signingKey)" = '~/.ssh/git_signing_key'
+
+          # ~/.gitconfig.local is included last, so it overrides tracked values.
+          git config --file "$test_home/.gitconfig.local" user.email work@example.com
+          test "$(git_config user.email)" = work@example.com
 
           HOME="$test_home" emacs --batch --quick \
             --eval '(package-initialize)' --load "$PWD/emacs" \

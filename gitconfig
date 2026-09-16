@@ -1,7 +1,7 @@
-; ~/.gitconfig.local should define user.name, user.email, and user.signingKey
-; for example: git config -f ~/.gitconfig.local user.name "Your Name"
-[include]
-	path = ~/.gitconfig.local
+[user]
+	name = Paul Frybarger
+	email = pfrybar@frymail.net
+	signingKey = ~/.ssh/git_signing_key
 [gpg]
 	format = ssh
 [commit]
@@ -36,3 +36,7 @@
 	ff = only
 [push]
 	autoSetupRemote = true
+; ~/.gitconfig.local overrides anything above, such as user.email on a work
+; machine, so keep this include last
+[include]
+	path = ~/.gitconfig.local

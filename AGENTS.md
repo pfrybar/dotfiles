@@ -16,8 +16,10 @@ setup in detail; read it before changing behavior.
 - `Brewfile` lists the macOS packages.
 - `tinted-shell` is vendored. Update it from upstream rather than editing or
   reformatting it.
-- Identity, credentials, and machine-specific settings never go in the
-  repository. They belong in `~/.gitconfig.local` and `~/.zshrc.local`.
+- Credentials and secrets never go in the repository. `gitconfig` holds the
+  default Git identity, and machine-specific settings belong in
+  `~/.gitconfig.local` and `~/.zshrc.local`. Keep the include of
+  `~/.gitconfig.local` at the end of `gitconfig` so it can override the rest.
 
 ## Compatibility
 
