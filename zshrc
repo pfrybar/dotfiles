@@ -6,10 +6,6 @@
 # ensure function paths do not contain duplicates.
 typeset -gU fpath
 
-# turn off autocorrect options
-unsetopt CORRECT_ALL
-unsetopt CORRECT
-
 # define aliases
 alias gb='git branch'
 alias gco='git checkout'

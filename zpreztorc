@@ -33,7 +33,6 @@ zstyle ':prezto:load' pmodule \
   'editor' \
   'history' \
   'utility' \
-  'python' \
   'completion' \
   'syntax-highlighting' \
   'prompt'
@@ -51,16 +50,6 @@ zstyle ':prezto:module:editor' key-bindings 'emacs'
 
 # Ignore submodules when they are 'dirty', 'untracked', 'all', or 'none'.
 # zstyle ':prezto:module:git:status:ignore' submodules 'all'
-
-#
-# History Substring Search
-#
-
-# Set the query found color.
-zstyle ':prezto:module:history-substring-search:color' found ''
-
-# Set the query not found color.
-zstyle ':prezto:module:history-substring-search:color' not-found 'standout'
 
 #
 # Prompt
@@ -90,15 +79,10 @@ zstyle ':prezto:module:syntax-highlighting' pattern \
 # Utility
 #
 
+# Disable command spelling correction.
+zstyle ':prezto:module:utility' correct 'no'
+
 # Enabled safe options. This aliases cp, ln, mv and rm so that they prompt
 # before deleting or overwriting files. Set to 'no' to disable this safer
 # behavior.
 zstyle ':prezto:module:utility' safe-ops 'no'
-
-
-#
-# Python
-#
-
-# Automatically switch into a virtualenv if one is found in '.venv'
-zstyle ':prezto:module:python:virtualenv' auto-switch 'yes'
