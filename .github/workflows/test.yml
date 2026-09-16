@@ -183,3 +183,43 @@ jobs:
 
           HOME="$test_home" ZDOTDIR="$test_home" TERM=xterm-256color \
             zsh -lic '[[ $ATUIN_TEST_INITIALIZED == yes ]]'
+
+  macos:
+    runs-on: macos-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Test installer and Homebrew environment
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          test -x /opt/homebrew/bin/brew
+          test "$(/opt/homebrew/bin/brew --prefix)" = /opt/homebrew
+
+          test_home="$(mktemp -d)"
+          trap 'rm -rf "$test_home"' EXIT
+          HOME="$test_home" ./install.sh >/dev/null
+
+          expected=(
+            emacs gitconfig tinted-shell tmux.conf zlogin zlogout
+            zpreztorc zprofile zshenv zshrc
+          )
+          for file in "${expected[@]}"; do
+            target="$test_home/.$file"
+            test -L "$target"
+            test "$(readlink "$target")" = "$PWD/$file"
+          done
+
+          HOME="$test_home" ZDOTDIR="$test_home" /bin/zsh -dfc '
+            source "$ZDOTDIR/.zprofile"
+            [[ $HOMEBREW_PREFIX == /opt/homebrew ]]
+            [[ $HOMEBREW_CELLAR == /opt/homebrew/Cellar ]]
+            [[ $HOMEBREW_REPOSITORY == /opt/homebrew ]]
+            (( path[(Ie)/opt/homebrew/bin] ))
+            (( fpath[(Ie)/opt/homebrew/share/zsh/site-functions] ))
+            [[ $INFOPATH == /opt/homebrew/share/info:* ]]
+          '
