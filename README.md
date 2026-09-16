@@ -52,10 +52,10 @@ elif [ -x /usr/local/bin/brew ]; then
   eval "$(/usr/local/bin/brew shellenv)"
 fi
 
-brew install git zsh tmux emacs asdf diff-so-fancy atuin
+git clone https://github.com/pfrybar/dotfiles.git "$HOME/.dotfiles"
+brew bundle install --no-upgrade --file="$HOME/.dotfiles/Brewfile"
 
 git clone --recursive https://github.com/sorin-ionescu/prezto.git "$HOME/.zprezto"
-git clone https://github.com/pfrybar/dotfiles.git "$HOME/.dotfiles"
 cd "$HOME/.dotfiles"
 ./install.sh
 
@@ -80,7 +80,8 @@ The installer is idempotent:
 - Correct symlinks are left unchanged.
 - Existing destinations are moved to `<name>.old`.
 - Installation stops if both a destination and its backup already exist.
-- `install.sh`, `README.md`, hidden entries, and files ending in `~` are skipped.
+- `Brewfile`, `install.sh`, `README.md`, hidden entries, and files ending in `~`
+  are skipped.
 
 The file discovery is intentionally dynamic. Do not leave unrelated files in
 the repository root, because they would become dotfile links.
@@ -159,6 +160,7 @@ the repository.
 
 ```sh
 git -C "$HOME/.dotfiles" pull --ff-only
+brew bundle install --no-upgrade --file="$HOME/.dotfiles/Brewfile"
 
 git -C "$HOME/.zprezto" pull --ff-only
 git -C "$HOME/.zprezto" submodule sync --recursive

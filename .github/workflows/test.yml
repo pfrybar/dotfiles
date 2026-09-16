@@ -67,6 +67,7 @@ jobs:
           printf 'original zshrc\n' > "$test_home/.zshrc"
           HOME="$test_home" ./install.sh
           test "$(<"$test_home/.zshrc.old")" = 'original zshrc'
+          test ! -e "$test_home/.Brewfile"
 
           expected=(
             emacs gitconfig tinted-shell tmux.conf zlogin zlogout
@@ -199,10 +200,13 @@ jobs:
 
           test -x /opt/homebrew/bin/brew
           test "$(/opt/homebrew/bin/brew --prefix)" = /opt/homebrew
+          /opt/homebrew/bin/brew bundle list \
+            --file="$PWD/Brewfile" --formula >/dev/null
 
           test_home="$(mktemp -d)"
           trap 'rm -rf "$test_home"' EXIT
           HOME="$test_home" ./install.sh >/dev/null
+          test ! -e "$test_home/.Brewfile"
 
           expected=(
             emacs gitconfig tinted-shell tmux.conf zlogin zlogout

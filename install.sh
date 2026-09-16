@@ -2,9 +2,9 @@
 set -euo pipefail
 
 for f in *; do
-    # skip the install script, README.md, and emacs autosave files
+    # skip repository metadata and emacs autosave files
     case "$f" in
-        install.sh|README.md|*~)
+        Brewfile|install.sh|README.md|*~)
             continue
             ;;
     esac
