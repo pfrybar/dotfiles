@@ -31,5 +31,10 @@ asdf_dir="${ASDF_DATA_DIR:-$HOME/.asdf}"
 prezto_dir="${ZDOTDIR:-$HOME}/.zprezto"
 [ -s "$prezto_dir/init.zsh" ] && source "$prezto_dir/init.zsh"
 
+# atuin
+if (( $+commands[atuin] )); then
+  eval "$(atuin init zsh --disable-up-arrow)"
+fi
+
 # local zshrc
 [ -s "$HOME/.zshrc.local" ] && source "$HOME/.zshrc.local"
