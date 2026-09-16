@@ -38,7 +38,8 @@ cd "$HOME/.dotfiles"
 
 ### Full macOS setup
 
-These sequences assume a fresh machine.
+This sequence assumes a fresh machine. Make sure to replace name, email,
+and signing key path for git config in the instructions below before running.
 
 ```sh
 xcode-select --install
@@ -60,6 +61,7 @@ cd "$HOME/.dotfiles"
 
 git config --file "$HOME/.gitconfig.local" user.name "Your Name"
 git config --file "$HOME/.gitconfig.local" user.email "you@example.com"
+git config --file "$HOME/.gitconfig.local" user.signingKey "path_to_signing_key"
 
 emacs --batch --load "$HOME/.emacs" --eval '(package-refresh-contents)' --eval '(package-install-selected-packages t)'
 
@@ -121,11 +123,12 @@ optional and are not managed here.
 
 ### Git
 
-Personal identity stays in `~/.gitconfig.local`. The tracked configuration uses
-diff-so-fancy, initializes repositories with `main`, prunes stale remote
-branches, uses `zdiff3` conflicts, establishes an upstream on first push, and
-allows only fast-forward pulls. A divergent pull must be resolved with an
-explicit merge or rebase.
+Personal identity and the SSH signing-key path stay in `~/.gitconfig.local`.
+Commits are signed automatically. The tracked configuration uses diff-so-fancy,
+initializes repositories with `main`, prunes stale remote branches, uses
+`zdiff3` conflicts, establishes an upstream on first push, and allows only
+fast-forward pulls. A divergent pull must be resolved with an explicit merge or
+rebase.
 
 ### Emacs
 

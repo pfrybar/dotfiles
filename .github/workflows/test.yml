@@ -109,6 +109,8 @@ jobs:
           git_config() {
             HOME="$test_home" git config --global --includes --get "$1"
           }
+          test "$(git_config gpg.format)" = ssh
+          test "$(git_config commit.gpgSign)" = true
           test "$(git_config color.ui)" = auto
           test "$(git_config init.defaultBranch)" = main
           test "$(git_config fetch.prune)" = true

@@ -1,6 +1,11 @@
-; ~/.gitconfig.local should have 'user.name' and 'user.email' (git config -f ~/.gitconfig.local user.name "Your Name")
+; ~/.gitconfig.local should define user.name, user.email, and user.signingKey
+; for example: git config -f ~/.gitconfig.local user.name "Your Name"
 [include]
 	path = ~/.gitconfig.local
+[gpg]
+	format = ssh
+[commit]
+	gpgSign = true
 [pager]
 	branch = false
 [core]
