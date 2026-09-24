@@ -1,0 +1,8 @@
+{
+  "model": "opus",
+  "permissions": {
+    "defaultMode": "auto"
+  },
+  "theme": "dark",
+  "autoContinueAtUsageLimit": false
+}

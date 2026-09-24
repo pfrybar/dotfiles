@@ -84,6 +84,9 @@ jobs:
             test "$(readlink -f "$target")" = "$PWD/$file"
           done
           test "$(find "$test_home" -maxdepth 1 -type l | wc -l)" -eq "${#expected[@]}"
+          test -d "$test_home/.claude" && test ! -L "$test_home/.claude"
+          test "$(readlink -f "$test_home/.claude/settings.json")" = \
+            "$PWD/claude/settings.json"
 
           # A second run must leave every correct link unchanged.
           HOME="$test_home" ./install.sh
@@ -138,7 +141,7 @@ jobs:
             --eval "(unless (equal custom-file (locate-user-emacs-file \"custom.el\")) (kill-emacs 1))" \
             --eval "(unless (equal (cdr (assoc \".\" backup-directory-alist)) (locate-user-emacs-file \"backups\")) (kill-emacs 1))"
 
-      - name: Test Emacs package installation
+      - name: Test post-install.sh
         shell: bash
         run: |
           set -euo pipefail
@@ -147,6 +150,9 @@ jobs:
           trap 'rm -rf "$test_home"' EXIT
           HOME="$test_home" ./install.sh >/dev/null
 
+          # An existing ~/.claude.json keeps its other keys.
+          printf '{"numStartups": 3}\n' > "$test_home/.claude.json"
+
           # The first run installs the selected packages; the second has nothing to do.
           HOME="$test_home" ./post-install.sh
           HOME="$test_home" ./post-install.sh
@@ -154,6 +160,15 @@ jobs:
           HOME="$test_home" emacs --batch --quick \
             --eval '(package-initialize)' --load "$PWD/emacs" \
             --eval "(unless (memq 'base16-tomorrow-night custom-enabled-themes) (kill-emacs 1))"
+
+          jq -e '.hasCompletedOnboarding == true and .numStartups == 3' \
+            "$test_home/.claude.json"
+
+          # A missing ~/.claude.json is created privately.
+          rm "$test_home/.claude.json"
+          HOME="$test_home" ./post-install.sh
+          jq -e '.hasCompletedOnboarding == true' "$test_home/.claude.json"
+          test "$(stat -c %a "$test_home/.claude.json")" = 600
 
       - name: Test tmux configuration
         shell: bash
@@ -250,6 +265,9 @@ jobs:
             test -L "$target"
             test "$(readlink "$target")" = "$PWD/$file"
           done
+          test -d "$test_home/.claude" && test ! -L "$test_home/.claude"
+          test "$(readlink "$test_home/.claude/settings.json")" = \
+            "$PWD/claude/settings.json"
 
           HOME="$test_home" ZDOTDIR="$test_home" /bin/zsh -dfc '
             source "$ZDOTDIR/.zprofile"

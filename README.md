@@ -7,6 +7,7 @@ palette without using a dotfile manager.
 `install.sh` links these repository files into `$HOME`:
 
 ```text
+claude/*     -> ~/.claude/*
 emacs        -> ~/.emacs
 gitconfig    -> ~/.gitconfig
 tinted-shell -> ~/.tinted-shell
@@ -78,6 +79,8 @@ The installer is idempotent:
 - Installation stops if both a destination and its backup already exist.
 - `AGENTS.md`, `Brewfile`, `CLAUDE.md`, `install.sh`, `post-install.sh`,
   `README.md`, hidden entries, and files ending in `~` are skipped.
+- `claude` is linked file by file into `~/.claude` rather than as a whole,
+  because that directory also holds Claude Code's credentials and history.
 
 The file discovery is intentionally dynamic. Do not leave unrelated files in
 the repository root, because they would become dotfile links.
@@ -138,6 +141,22 @@ Tomorrow Night loads when its package is installed. Customize output lives in
 `post-install.sh` installs any selected packages that are missing. Once all of
 them are installed, it does nothing and does not contact the package archives.
 
+### Claude Code
+
+`claude/settings.json` holds the user settings: Opus, auto mode, the dark
+theme, and no automatic continuation when a usage limit is reached. The model
+and mode are set explicitly because Claude Code picks them by plan, and with a
+token from `claude setup-token` it falls back to Sonnet and Manual mode. Claude
+Code writes some changes, such as `/model`, to this file, so they show up as
+changes in the repository.
+
+Log in with `/login`, or set `CLAUDE_CODE_OAUTH_TOKEN` to a token from
+`claude setup-token`, such as with a Coder secret. Claude Code still shows its
+first-run screens, including a login prompt, when only the token is set
+([anthropics/claude-code#46259](https://github.com/anthropics/claude-code/issues/46259)),
+so `post-install.sh` marks onboarding as complete in `~/.claude.json` when `jq`
+is available. Credentials never go in the repository.
+
 ### tmux
 
 The prefix is `Ctrl-Space`; pressing it twice sends `Ctrl-Space` to the pane.
@@ -169,8 +188,8 @@ git -C "$HOME/.zprezto" submodule sync --recursive
 git -C "$HOME/.zprezto" submodule update --init --recursive
 ```
 
-Rerun `install.sh` only when a new top-level dotfile is added, and
-`post-install.sh` when the selected Emacs packages change. Updates are never
+Rerun `install.sh` only when a new top-level dotfile or a new file in `claude`
+is added, and `post-install.sh` when the selected Emacs packages change. Updates are never
 pulled automatically; Pure's background fetches do not modify working trees.
 
 ## Restoring a backup
@@ -187,5 +206,6 @@ mv "$HOME/.zshrc.old" "$HOME/.zshrc"
 
 GitHub Actions checks the installer on Linux and macOS, including the Apple
 Silicon Homebrew environment. It also tests configuration syntax, Git, Emacs,
-Emacs package installation, tmux, Prezto startup, and Atuin initialization.
+Emacs package installation, Claude Code onboarding, tmux, Prezto startup, and
+Atuin initialization.
 See the workflow for details.
