@@ -132,6 +132,9 @@ initializes repositories with `main`, prunes stale remote branches, uses
 fast-forward pulls. A divergent pull must be resolved with an explicit merge or
 rebase.
 
+When `gh` is installed, it supplies credentials for `https://github.com`;
+without it, Git falls back to any other configured helper.
+
 ### Emacs
 
 The selected packages are `base16-theme`, `markdown-mode`, and `yaml-mode`.
