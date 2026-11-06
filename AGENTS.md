@@ -56,4 +56,17 @@ done
   `Co-Authored-By: GPT-5.6 Codex <noreply@openai.com>`.
 - Commits are SSH-signed. If signing fails, stop and report it instead of
   committing with `--no-gpg-sign`.
-- Do not push; the maintainer pushes.
+- Commit on a branch, never `main`.
+- You cannot push to `origin`: your GitHub token belongs to an account without
+  write access. Push to that account's fork and open a pull request; the
+  maintainer reviews and merges it.
+
+  ```sh
+  # once per clone: add the fork (created if missing) as `fork`, and make
+  # pfrybar/dotfiles the repo that pull requests target
+  gh repo fork --remote --remote-name fork
+  gh repo set-default pfrybar/dotfiles
+
+  git push -u fork HEAD
+  gh pr create --fill
+  ```

@@ -36,6 +36,11 @@
 	ff = only
 [push]
 	autoSetupRemote = true
+; let gh supply github credentials when it is installed. in a workbench
+; container gh logs in from GH_TOKEN, which belongs to an account that can only
+; push to its own forks
+[credential "https://github.com"]
+	helper = "!f() { command -v gh >/dev/null || exit 0; exec gh auth git-credential \"$@\"; }; f"
 ; ~/.gitconfig.local overrides anything above, such as user.email on a work
 ; machine, so keep this include last
 [include]

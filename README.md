@@ -132,6 +132,26 @@ initializes repositories with `main`, prunes stale remote branches, uses
 fast-forward pulls. A divergent pull must be resolved with an explicit merge or
 rebase.
 
+When `gh` is installed, it supplies credentials for `https://github.com`;
+without it, Git falls back to any other configured helper.
+
+In Coder workspaces, two Coder secrets provide what the repository cannot hold:
+
+```sh
+# the commit signing key: a key used only by workspaces, without a passphrase,
+# added to GitHub as a signing key
+coder secret create git-signing-key --file ~/.ssh/git_signing_key \
+    < coder_git_signing_key
+
+# a classic token with the public_repo scope for a separate GitHub account,
+# which agents use to push to that account's forks and open pull requests
+coder secret create gh-token --env GH_TOKEN < bot_token
+```
+
+That account must not be a collaborator on these repositories, so agents can
+propose changes but not push them. Workspaces receive new secrets when they
+restart.
+
 ### Emacs
 
 The selected packages are `base16-theme`, `markdown-mode`, and `yaml-mode`.

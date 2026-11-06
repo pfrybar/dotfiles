@@ -135,6 +135,17 @@ jobs:
           git config --file "$test_home/.gitconfig.local" user.email work@example.com
           test "$(git_config user.email)" = work@example.com
 
+          # gh supplies GitHub credentials; a stub stands in for it.
+          stub_bin="$test_home/stub-bin"
+          mkdir -p "$stub_bin"
+          printf '%s\n' '#!/bin/sh' \
+            '[ "$*" = "auth git-credential get" ] && printf "username=stub\npassword=from-gh\n"' \
+            > "$stub_bin/gh"
+          chmod +x "$stub_bin/gh"
+          printf 'protocol=https\nhost=github.com\n\n' \
+            | HOME="$test_home" PATH="$stub_bin:$PATH" GIT_TERMINAL_PROMPT=0 \
+              git credential fill | grep -qx 'password=from-gh'
+
           HOME="$test_home" emacs --batch --quick \
             --eval '(package-initialize)' --load "$PWD/emacs" \
             --eval "(unless (equal package-selected-packages '(base16-theme markdown-mode yaml-mode)) (kill-emacs 1))" \
